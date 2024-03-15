@@ -118,15 +118,41 @@ class Database {
 	
 	
 	public function assignment_solutions($id_group) {
-		$sql = "SELECT S.id, IF(S.best = 1, 'best', '') AS best, T.name AS team, T.id_user AS id_team ";
+		$sql = "SELECT S.id, IF(S.best = 1, 'best', '') AS best, T.name AS team, T.id_user AS id_team, S.id_assignment AS id_assignment, C.category, S.best_assignment_number ";
 		$sql.= "FROM assignments AS A ";
 		$sql.= "LEFT JOIN solutions AS S ";
 		$sql.= "ON A.id = S.id_assignment ";
 		$sql.= "LEFT JOIN teams AS T ";
 		$sql.= "ON S.id_user = T.id_user ";
+		$sql.= "LEFT JOIN comments AS C ";
+		$sql.= "ON S.id = C.id_solution ";
 		$sql.= "WHERE A.id_group = '" . $id_group . "' ";
 		$sql.= "GROUP BY T.name ";
 		$sql.= "ORDER BY S.best DESC, T.name ASC";
+		$result = mysqli_query($this->conn, $sql);
+		return $result;
+	}
+	
+	public function assignment_solutions_each_solution($id_group,$id_user) {
+		$sql = "SELECT S.id, IF(S.best = 1, 'best', '') AS best, T.name AS team, T.id_user AS id_team, C.points, C.internal_comment, C.category, S.text, C.id_user AS id_jury ";
+		$sql.= "FROM solutions AS S ";
+		$sql.= "LEFT JOIN assignments AS A ";
+		$sql.= "ON A.id = S.id_assignment ";
+		$sql.= "LEFT JOIN teams AS T ";
+		$sql.= "ON S.id_user = T.id_user ";
+		$sql.= "LEFT JOIN comments AS C ";
+		
+		$sql.= "ON S.id = C.id_solution AND C.id_user = '".$id_user."' ";
+		$sql.= "WHERE A.id_group = '" . $id_group . "' ";
+		$sql.= "ORDER BY S.best DESC, T.name ASC";
+		$result = mysqli_query($this->conn, $sql);
+		return $result;
+	}
+	
+	public function count_assignments($id_group) {
+		$sql = "SELECT count(A.id) ";
+		$sql.= "FROM assignments AS A ";
+		$sql.= "WHERE A.id_group = '" . $id_group . "' ";
 		$result = mysqli_query($this->conn, $sql);
 		return $result;
 	}
@@ -144,6 +170,7 @@ class Database {
 	public function solution_content($id_group, $id_user) {
 		$sql = "SELECT T.name AS team, A.sk_title, IF(A.en_title!='', A.en_title, A.sk_title) AS en_title, ";
                 $sql.= "IF(A.de_title!='', A.de_title, A.sk_title) AS de_title, T.sk_league, ";
+		$sql.= "T.description as team_info, ";
 		$sql.= "S.text, S.id AS id_solution ";
 		$sql.= "FROM assignments as A ";
 		$sql.= "LEFT JOIN solutions as S ";
@@ -253,6 +280,13 @@ class Database {
 		return mysqli_query($this->conn, $sql);
 	}
 	
+	public function after_deadline_group() {
+		$sql = "SELECT * ";
+		$sql.= "FROM assignments_group ";
+		$sql.= "WHERE end <= NOW() ";
+		$sql.= "GROUP BY id";
+		return mysqli_query($this->conn, $sql);
+	}
 	
 	public function published_assignment($id_group) {
 		$sql = "SELECT * ";
@@ -406,19 +440,20 @@ class Database {
 		$result = mysqli_query($this->conn, $sql);
 		return mysqli_num_rows($result);
 	}
-	
-	
-	public function registration_user($mail, $password, $team, $about, $league) {
-		$sql = "INSERT INTO users ";
-		$sql.= "(mail, password, admin, jury) VALUES ";
-		$sql.= "('" . $mail . "', '" . md5($password) . "', '0', '0')";
-		mysqli_query($this->conn, $sql);
+
+
+	public function registration_user($mail, $password, $team, $about, $league, $city, $street_name, $zip_code, $category) {
+		$sql = "INSERT INTO users (mail, password, admin, jury) VALUES (?, ?, '0', '0')";
+		$stmt = mysqli_prepare($this->conn, $sql);
+		$hashed_password = md5($password);
+		mysqli_stmt_bind_param($stmt, "ss", $mail, $hashed_password);
+		mysqli_stmt_execute($stmt);
 		$id_user = mysqli_insert_id($this->conn);
-		
-		$sql = "INSERT INTO teams ";
-		$sql.= "(id_user, name, description, sk_league) VALUES ";
-		$sql.= "('" . $id_user . "', '" . $team . "', '" . $about . "', '" . $league . "')";
-		mysqli_query($this->conn, $sql);
+
+		$sql = "INSERT INTO teams (id_user, name, description, sk_league, city, street_name, zip, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		$stmt = mysqli_prepare($this->conn, $sql);
+		mysqli_stmt_bind_param($stmt, "isssssss", $id_user, $team, $about, $league, $city, $street_name, $zip_code, $category);
+		mysqli_stmt_execute($stmt);
 	}
 
 
@@ -451,7 +486,7 @@ class Database {
 	public function expired_assignment($id_assignment) {
 		$sql = "SELECT * ";
 		$sql.= "FROM assignments_group AS AG ";
-		$sql.= "WHERE AG.id = '" . $id_assignment . "' AND AG.end > NOW()";
+		$sql.= "WHERE AG.id = '" . $id_assignment . "' AND AG.end < NOW()";
 		$result = mysqli_query($this->conn, $sql);
 		return mysqli_num_rows($result);
 	}
@@ -466,17 +501,44 @@ class Database {
 	}
 	
 	
-	public function set_comment($solution, $id_user, $text, $points) {
+public function set_comment($solution, $id_user, $text, $points, $internal_comment=NULL) {
 		$sql = "INSERT INTO comments ";
-		$sql.= "(id_solution, id_user, text, points) VALUES ";
-		$sql.= "('" . $solution . "', '" . $id_user . "', '" . $text . "', '" . $points . "')";
+		$sql.= "(id_solution, id_user, text, points, internal_comment) VALUES ";
+		$sql.= "('" . $solution . "', '" . $id_user . "', '" . $text . "', '" . $points . "', '" . $internal_comment . "')";
 		mysqli_query($this->conn, $sql);
 	}
 	
+	public function set_category($id_team, $category) {		
+		$sql.= "UPDATE solutions AS S ";
+		$sql.= "LEFT JOIN assignments AS A ";
+		$sql.= "ON A.id = S.id_assignment ";
+		$sql.= "LEFT JOIN teams AS T ";
+		$sql.= "ON S.id_user = T.id_user ";
+		$sql.= "LEFT JOIN comments AS C ";
+		$sql.= "ON S.id = C.id_solution ";
+		$sql.= "SET C.category = " . $category . " ";
+		$sql.= "WHERE T.id_user = '" . $id_team . "'";
+		mysqli_query($this->conn, $sql);
+	}	
 	
-	public function update_comment($solution, $id_user, $text, $points, $category) {
+	public function set_best_assignment_number($id_team, $number) {		
+		$sql.= "UPDATE solutions ";
+		$sql.= "SET best_assignment_number = '" . $number . "', best = 1 ";
+		$sql.= "WHERE id_user = '" . $id_team . "'";
+		mysqli_query($this->conn, $sql);
+	}
+	
+		public function unset_best($id_team) {		
+		$sql.= "UPDATE solutions ";
+		$sql.= "SET best_assignment_number = 0, best = 0 ";
+		$sql.= "WHERE id_user = '" . $id_team . "'";
+		mysqli_query($this->conn, $sql);
+	}	
+	
+	
+	public function update_comment($solution, $id_user, $text, $points, $internal_comment=NULL) {
 		$sql = "UPDATE comments ";
-		$sql.= "SET text = '" . $text . "', points = '" . $points . "', category= " . $category . " ";
+		$sql.= "SET text = '" . $text . "', points = '" . $points . "', internal_comment = '" . $internal_comment . "' ";
 		$sql.= "WHERE id_solution = '" . $solution . "' AND id_user = '" . $id_user . "'";
 		mysqli_query($this->conn, $sql);
 	}
@@ -497,6 +559,13 @@ class Database {
 		$sql.= "FROM teams ";
 		$sql.= "WHERE name = '" . $team . "'";
 		return mysqli_num_rows(mysqli_query($this->conn, $sql));
+	}
+	
+	public function get_team_category($id_team) {
+		$sql = "SELECT category ";
+		$sql.= "FROM teams ";
+		$sql.= "WHERE id_user = '" . $id_team . "'";
+		return mysqli_query($this->conn, $sql);
 	}
 	
 	
@@ -658,6 +727,87 @@ class Database {
         $sql.= "WHERE G.year = '" . $year . "' AND C.id_user = 1";
         return mysqli_query($this->conn, $sql);
     }
+
+	public function getUserAndTeamInfo($userId) {
+		$sql = "SELECT 
+                    u.mail, 
+                    t.name, 
+                    t.description, 
+                    t.city, 
+                    t.street_name, 
+                    t.zip, 
+                    t.category,
+					t.sk_league 
+                FROM 
+                    users as u 
+                JOIN 
+                    teams as t 
+                ON 
+                    u.id = t.id_user 
+                WHERE 
+                    u.id = ?";
+
+		if ($stmt = $this->conn->prepare($sql)) {
+			$stmt->bind_param("i", $userId);
+			$stmt->execute();
+			$stmt->bind_result($mail, $name, $description, $city, $streetName, $zip, $category, $sk_league);
+
+			if ($stmt->fetch()) {
+				$userInfo = [
+					'mail' => $mail,
+					'name' => $name,
+					'description' => $description,
+					'city' => $city,
+					'street_name' => $streetName,
+					'zip' => $zip,
+					'category' => $category,
+					'sk_league' => $sk_league
+				];
+			} else {
+				$userInfo = null;
+			}
+
+			$stmt->close();
+
+			return $userInfo;
+		} else {
+			die("Statement could not be prepared: " . $this->conn->error);
+		}
+	}
+
+	public function update_user($mail, $team, $about, $city, $street_name, $zip_code, $category, $userid) {
+		// Update the user table
+		$sql = "UPDATE users SET mail = ? WHERE id = ?";
+		$stmt = mysqli_prepare($this->conn, $sql);
+		mysqli_stmt_bind_param($stmt, "si", $mail, $userid);
+		mysqli_stmt_execute($stmt);
+
+		// Update the teams table
+		$sql = "UPDATE teams SET name = ?, description = ?, city = ?, street_name = ?, zip = ?, category = ? WHERE id_user = ?";
+		$stmt = mysqli_prepare($this->conn, $sql);
+		mysqli_stmt_bind_param($stmt, "ssssssi", $team, $about, $city, $street_name, $zip_code, $category, $userid);
+		mysqli_stmt_execute($stmt);
+	}
+
+    public function check_for_this_years_solution($userID, $currentYear){
+        $sql = "SELECT a.id 
+                FROM users u
+                LEFT JOIN solutions s ON u.id = s.id_user
+                LEFT JOIN assignments a ON s.id_assignment = a.id
+                LEFT JOIN assignments_group ag ON a.id_group = ag.id AND ag.year = ?
+                WHERE u.id = ? AND ag.id IS NOT NULL
+                LIMIT 1";
+
+        $stmt = mysqli_prepare($this->conn, $sql);
+        mysqli_stmt_bind_param($stmt, "ii", $currentYear, $userID);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+
+        return mysqli_num_rows($result) > 0;
+
+    }
+
 
 	function __destruct() {
 		mysqli_close($this->conn);

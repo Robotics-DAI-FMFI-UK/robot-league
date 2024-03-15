@@ -19,15 +19,18 @@ class Pages extends Translate {
 				"home"								=> "content/home.htm",
 				"assignment"						=> "content/assignment.htm",
 				"assignments-overview"		=> "content/assignments-overview.htm",
+				"assignment-preview"		=> "content/assignment-preview.htm",
 				"new-assignment"				=> "content/new-assignment.htm",
 				"new-registration"				=> "content/new-registration.htm",
 				"new-solution"					=> "content/new-solution.htm",
+				"solution-preview"		=> "content/solution-preview.htm",
 				"results"							=> "content/results.htm",
 				"solution"							=> "content/solution.htm",
 				"archive"							=> "content/archive.htm",
 				"jury"								=> "content/jury.htm",
 				"teams"								=> "content/teams.htm",
-				"error-404"						=> "error/error-404.htm");
+				"error-404"						=> "error/error-404.htm",
+				"profile"						=>	"content/profile.htm");
 		});
 		
 		

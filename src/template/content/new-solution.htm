@@ -2,6 +2,8 @@
 @{include_php:new_solution}
 @{save_ok}
 <form method="post" id="assignment_form" enctype="multipart/form-data">
+	<div id="MissingInfo" style="color:red; font-size: large; font-weight: bold"> </div>
+	@{cat_info}
 	<h2>@{solution_assignment}: @{assignment_title}</h2>
 	<p class="fix_height_solution">
 		<textarea name="solution" id="solution">@{solution_text}</textarea>
@@ -24,10 +26,13 @@
 @{get_images_solution}
 	</ul>
 	<input type="file" class="multiupload" name="upload_images[]" multiple="multiple">
+	<div id="MissingInfo2" style="color:red; font-size: large; font-weight: bold"> </div>
+	<p id="unsaved_changes" class="alert alert-warning" style="display: none">@{unsaved_changes}</p>
 	<p>
 		<input type="hidden" name="save_solution" value="ok">
 		<input type="hidden" name="id_assignment" value="@{new_assignment_id}">
-		<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> @{solution_save}</button>
+		<button type="submit" class="btn btn-success" id="saveButton"><span class="glyphicon glyphicon-file"></span> @{solution_save}</button>
+		<button type="button" id="preview_button" class="btn btn-info">@{solution_preview}</button>
 		<a href="./?page=assignment&id=@{assignment_group_id}" class="btn btn-warning">@{solution_overview}</a>
 	</p>
 </form>
@@ -35,6 +40,18 @@
 <script>
 tinymce.init({
 	selector: 'textarea',
+	setup: function(editor) {
+			editor.on('Change', function () {
+				var hasUndo = editor.undoManager.data.length > 0;
+				if (hasUndo) {
+					$("#unsaved_changes").show();
+				}
+				else {
+					$("#unsaved_changes").hide();
+				}
+			console.log("yo");
+		})
+	},
 	height: 400,
 	menubar: false,
 	plugins: [
@@ -55,5 +72,29 @@ $("#photo_gallery li a").fancybox({
 		var url = $(this).attr("href");
 		$(".fancybox-image").wrap("<a href='" + url + "' target='_blank' />");
 	}
+});
+
+</script>
+
+<script>
+	window.onload = function() {
+		if("@{UpdateProfile}") {
+			var updateNoticeDiv = document.getElementById('MissingInfo');
+			var updateNoticeDiv2 = document.getElementById('MissingInfo2');
+			var saveButton = document.getElementById('saveButton');
+			updateNoticeDiv.innerText = "@{solution_missing_info}";
+			updateNoticeDiv2.innerText = "@{solution_missing_info}";
+			saveButton.style.display = 'none';
+		}
+	};
+</script>
+
+<script>
+	document.getElementById('preview_button').addEventListener('click', function () {
+	var url = window.location.href;
+	var urlParams = new URLSearchParams(window.location.search);
+	var assignment_id = urlParams.get('id-assignment');
+	var id_team = urlParams.get('id-team');
+    window.open('./?page=solution-preview&id-assignment=' + assignment_id + '&id-team=' + id_team, '_blank');
 });
 </script>
