@@ -4,9 +4,9 @@ if (Security::get("delete")) {
 	$this->database->remove_jury(Security::get("delete"));
 }
 
-require("phpmailer/class.phpmailer.php");
+require_once("phpmailer/class.phpmailer.php");
 
-require("components/util.php");
+require_once("components/util.php");
 
 
 $my_mail = Security::post("mail");

@@ -1,7 +1,7 @@
 <?php
-require("phpmailer/class.phpmailer.php");
+require_once("phpmailer/class.phpmailer.php");
 
-require("components/util.php");
+require_once("components/util.php");
 
 if ((Security::post("reset") == Security::post("rstpsswd")) && (Security::post("reset") != ""))
 {
