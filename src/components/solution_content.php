@@ -61,6 +61,8 @@ $html.= "<form method='post'><input type='hidden' name='create_comment' value='o
 
 
 $get_solution = $this->database->solution_content($id_group, $id_team);
+
+$solution_count = 0;
 while($row = mysqli_fetch_assoc($get_solution)) {
 	$get_photos		= $this->database->get_solution_photos($row["id_solution"]);
 	$get_video			= $this->database->get_solution_video($row["id_solution"]);
@@ -75,17 +77,22 @@ while($row = mysqli_fetch_assoc($get_solution)) {
 	$html.= "<div id='photo_gallery'>";
 
 	while($solution_photo = mysqli_fetch_assoc($get_photos)) {
-		$html.= "<a data-fancybox=\"gallery\" href='components/get_image.php?id=" . $solution_photo["token"] . "&.jpg' rel='group_" . $row["id_solution"] . "'>";
+		$html.= "<a data-fancybox=\"gallery" . $solution_count . "\" href='components/get_image.php?id=" . $solution_photo["token"] . "&.jpg' rel='group_" . $row["id_solution"] . "'>";
 		$html.="<img src='components/get_image.php?id=" . $solution_photo["token"] . "&min=1'>";
 		$html.= "</a>";
 	}
 	$html.= "</div>";
-	$html.= "<script src=\"https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js\"></script>
-    <script>
-      Fancybox.bind('[data-fancybox=\"gallery\"]', {
-        //
-      });    
-    </script>";
+	$html.= "
+		<script src=\"https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js\"></script>
+    	<script>
+    	  Fancybox.bind('[data-fancybox=\"gallery" . $solution_count . "\"]', {
+    	    //
+    	  });    
+    	</script>
+		<link
+		  rel=\"stylesheet\"
+		  href=\"https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css\"
+		/>";
 	
 	$html.= "<h2>" . $this->get("solution_videos") . ":</h2>";
 	while($solution_video = mysqli_fetch_assoc($get_video)) {
@@ -164,6 +171,7 @@ while($row = mysqli_fetch_assoc($get_solution)) {
 			$admin_commented = true;
 		}
 	}
+	$solution_count++;
 }
 
 
