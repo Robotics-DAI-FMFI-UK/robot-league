@@ -1,15 +1,13 @@
 <?php
 
 function showResultsTable($skleague,$team_order, $team_info, $team_score, $min_max, $that, $year, $cat) {
-    $html = "<div class='teamScoreTotal lbl'>Sum</div>";
-    $html.= "</div>";
 
 	$ol = 0;
 	
     foreach ($team_order as $key => $value) {
         $team_name = $team_info[$key]["name"];
         $league = $team_info[$key]["league"];
-		if ($league != 1) $ol++;
+        if ($league != 1) $ol++;
 		
         $scoreTotal = number_format((float)$team_info[$key]["score"], 2, '.', '');
 
@@ -27,7 +25,8 @@ function showResultsTable($skleague,$team_order, $team_info, $team_score, $min_m
             $bestSolution = "";
             if ($best=="1" && $min_max == 1){
                 if ($league==1) $bestSolution = "greenCell";
-                else $bestSolution = "blueCell";
+		else if ($league==2) $bestSolution = "blueCell";
+		else $bestSolution = "orangeCell";
             }
             $html.= "<div class='score ".$bestSolution."'>";
             if ($vvalue[0]!="-")
@@ -59,6 +58,7 @@ function showResultsTable($skleague,$team_order, $team_info, $team_score, $min_m
     $league_name .= " " . $year;
     if ($cat == 1) $category_name = " - " . $that->get("reg_rabbits");
     else if ($cat == 2) $category_name = " - " . $that->get("reg_tigers");
+    else if ($cat == 3) $category_name = " - " . $that->get("reg_simulants");
     else $category_name = "";
 
     $head = "";
@@ -69,6 +69,8 @@ function showResultsTable($skleague,$team_order, $team_info, $team_score, $min_m
     for ($i=1; $i<=$count_cel; $i++) {
         $head .= "<div class='score lbl'>". $i .".</div>";
     }
+    $head .= "</div>";
+    $head .= "<div class='teamScoreTotal lbl'>Sum</div>";
     $head .= "</div>";
 	
     $html.= "</div>";
@@ -81,9 +83,10 @@ $html = "";
 $year = Security::get("year");
 if (!$year) $year = Date("Y");
 
-for ($cat = 1; $cat <= 2; $cat++)
+for ($cat = 1; $cat <= 3; $cat++)
 {
     if ($year < 2022) $cat = 0;
+    if (($year < 2025) and ($cat == 3)) break;
 
     $team_info = array();
     $team_score = array();
@@ -147,11 +150,11 @@ for ($cat = 1; $cat <= 2; $cat++)
     	$html.= showResultsTable(1,$team_order,$team_info,$team_score, 0, $this, $year, $cat);
     	$html.= showResultsTable(0,$team_order,$team_info,$team_score, 0, $this, $year, $cat);
     
-    	$html.= "</div>";
     }
     if ($year < 2022) break; // no tiger/rabbits categories
 }
 
+$html.= "</div>";
 return $html;
 ?>
 

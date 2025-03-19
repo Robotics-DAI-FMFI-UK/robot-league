@@ -80,6 +80,9 @@ if (strtotime($assignment_group["end"]) < $today || $this->get("user", "admin") 
 			if ($teamm_cat == "Tigre"){
 				$cat = 2;
 			}
+			else if ($teamm_cat == "Simulanti") {
+				$cat = 3;
+			}
 			
 			$html .= "<li class=\"" . $row["best"] . "" . ($row["best"] == "best" ? $row["best_assignment_number"] : "") . "" . ($row["best"] == "best" ? "_" . $cat : "") . "\">";
 
@@ -95,6 +98,7 @@ if (strtotime($assignment_group["end"]) < $today || $this->get("user", "admin") 
 				$html .= " Kategória: <select name='category[".$row["id_team"]."]'>";
 				$html .= "<option value='1'" . ($cat == 1 ? " selected" : "") . ">Zajace</option>";
 				$html .= "<option value='2'" . ($cat == 2 ? " selected" : "") . ">Tigre</option>";
+				$html .= "<option value='3'" . ($cat == 3 ? " selected" : "") . ">Simulanti</option>";
 				$html .= "</select>";
 				$html .= " Úloha č.: <input type='number' step='1' min='1' max='". $count ."' name='assignment_number[".$row["id_team"]."]' value='" . ($row["best_assignment_number"] == 0 ? "1" : $row["best_assignment_number"]) . "'>";
 					if ($row["best"] == 'best'){

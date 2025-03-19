@@ -214,7 +214,7 @@ class Database {
 		$sql.= "ON A.id = S.id_assignment ";
 		$sql.= "LEFT JOIN comments AS C ";
 		$sql.= "ON C.id_solution = S.id AND C.id_user = '1'";
-		$sql.= "WHERE A.id_group = '" . $id_group . "' AND C.text IS NULL";
+		$sql.= "WHERE A.id_group = '" . $id_group . "' AND C.text IS NULL AND S.id IS NOT NULL";
 		$result = mysqli_query($this->conn, $sql);
 		return mysqli_num_rows($result);
 	}
