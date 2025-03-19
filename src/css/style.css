@@ -559,6 +559,245 @@ h3 {
     margin-left: 20px; 
 }
 
+#content ul#solutions li.best1_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best1_3:before {
+    content: "1";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best1_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best2_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best2_3:before {
+    content: "2";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best2_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best3_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best3_3:before {
+    content: "3";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best3_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best4_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best4_3:before {
+    content: "4";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best4_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best5_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best5_3:before {
+    content: "5";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best5_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best6_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best6_3:before {
+    content: "6";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best6_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best7_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best7_3:before {
+    content: "7";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best7_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best8_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best8_3:before {
+    content: "8";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best8_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best9_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best9_3:before {
+    content: "9";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best9_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
+
+#content ul#solutions li.best10_3 {
+	position: relative;
+	background: transparent url(../image/cup.png) no-repeat 2px 3px;
+}
+
+#content ul#solutions li.best10_3:before {
+    content: "10";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: black; 
+    font-weight: bold;
+	font-size: 10px;
+    padding: 3px 7px; 
+}
+
+#content ul#solutions li.best10_3:after {
+	position: absolute;
+    content: url(../image/simul.png);
+	top: 0;
+    left: 0;
+    margin-left: 20px; 
+}
 #content ul#solutions li {
 	padding: 2px 0;
 	padding-left: 30px;
@@ -883,10 +1122,10 @@ div.teamResults:hover div.teamName:not(.lbl) {
     font-weight: bold;
 }
 
-div.teamResults:hover div.score:not(.lbl):not(.greenCell):not(.blueCell):nth-child(even) {
+div.teamResults:hover div.score:not(.lbl):not(.greenCell):not(.blueCell):not(.orangeCell):nth-child(even) {
    background-color: rgb(240, 240, 240);
 }
-div.teamResults:hover div.score:not(.lbl):not(.greenCell):not(.blueCell):nth-child(odd) {
+div.teamResults:hover div.score:not(.lbl):not(.greenCell):not(.blueCell):not(.orangeCell):nth-child(odd) {
    background-color: rgb(235, 235, 235);
 }
 
@@ -913,6 +1152,9 @@ div.greenCell {
 }
 div.blueCell {
     background-color: rgb(200, 200, 255);
+}
+div.orangeCell {
+    background-color: rgb(255, 220, 200);
 }
 
 div.score:not(.lbl) {

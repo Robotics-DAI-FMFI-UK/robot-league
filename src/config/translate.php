@@ -57,6 +57,7 @@ class Translate {
         $this->set("reg_openleague", "Medzinárodný tím", "International team", "Internationales Team");
         $this->set("reg_rabbits", "Zajace", "Rabbits", "Hasen");
         $this->set("reg_tigers", "Tigre", "Tigers", "Tiger");
+        $this->set("reg_simulants", "Simulanti", "Simulants", "Simulant");
         $this->set("reg_register", "Zaregistrovať sa", "Proceed with registration", "Anmelden");
         $this->set("reg_addrdisclaimer", "Adresu potrebujeme evidovať, aby sme Vám vedeli poslať diplom a ceny.", "Please supply the address so that we can send you an award.", "Bitte geben Sie die Adresse an, damit wir Ihnen eine Auszeichnung zusenden können");
         $this->set("gdpr", "GDPR: Robotická liga je on-line platforma na zdieľanie riešení. Za obsah a súhlas " .
