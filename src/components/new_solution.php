@@ -17,7 +17,8 @@ $assignment = $this->database->assignment($id_assignment);
 if (empty($userInfo["category"])) {
 	$this->set("cat_info", "<p class='alert alert-info'>" . $this->get("category_empty") . "</p>");
 } else {
-	$this->set("cat_info", "<p class='alert alert-info'>" . $this->get("category_info") . $this->get($userInfo["category"]) . ".</p>");
+	//$this->set("cat_info", "<p class='alert alert-info'>" . $this->get("category_info") . $this->get($userInfo["category"]) . ".</p>");
+	$this->set("cat_info", "<p class='alert alert-info'>" . $this->get("category_info") . $userInfo["category"] . ".</p>");
 }
 if(is_null($userInfo['city']) or is_null($userInfo['street_name']) or is_null($userInfo['zip']) or
 	is_null($userInfo['category']) or is_null($userInfo['description'])){

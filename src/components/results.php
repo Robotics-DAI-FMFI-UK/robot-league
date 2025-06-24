@@ -23,7 +23,12 @@ function showResultsTable($skleague,$team_order, $team_info, $team_score, $min_m
             $best = $vvalue[1];
 
             $bestSolution = "";
+
+	    // A TERRIBLE 2025 HACK BECAUSE OTHERWISE IT DOES NOT SHOW THE BEST SOLUTION MARK
+            // FOR TEAM THAT HAS MORE POINTS FOR THE OTHER TASK WHICH WAS NOT THE BEST :(((
+	    if (($year == 2025) && ($key == 270) && ($kkey == 106) && ($min_max == 0) && ($cat == 1)) $bestSolution = "greenCell";
             if ($best=="1" && $min_max == 1){
+            //if ($best=="1"){
                 if ($league==1) $bestSolution = "greenCell";
 		else if ($league==2) $bestSolution = "blueCell";
 		else $bestSolution = "orangeCell";
